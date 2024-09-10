@@ -1,5 +1,3 @@
-import GHC.IO.Encoding
-
 -- Make a list of length N starting from number N
 do_my_list n = take n [n..]
 
@@ -34,8 +32,6 @@ findSumm1 n | n == 1 = 1
 findSumm2 n = sum [n - x | x <- [1..n]]
 
 main = do
-    setLocaleEncoding utf8
-
     -- 0)
     putStrLn "0) Make a list of length N starting from number N:"
     let x = 4
