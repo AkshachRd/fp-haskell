@@ -17,6 +17,11 @@ myunion (x:xs) ys
     | x `elem` ys = myunion xs ys
     | otherwise   = x : myunion xs ys
 
+-- myunion :: (Eq a) => [a] -> [a] -> [a]
+-- myunion [] xs = xs
+-- myunion xs [] = xs
+-- myunion acc (x:xs) = ([x | x `notElem` acc]) ++ myunion acc xs
+
 -- Takes two lists and returns a new list of elements from the first list that hasn't occured in the second list
 mysubst :: Eq a => [a] -> [a] -> [a]
 mysubst [] _ = []
