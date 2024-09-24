@@ -31,7 +31,7 @@ mysubst (x:xs) ys
 
 -- Takes an index and a list of lists, and returns a new list of the elements at the given index in each sublist
 nposlist :: Int -> [[a]] -> [a]
-nposlist n lists = (map (!! n) . filter (not . null)) lists
+nposlist n lists = map (!! n) $ filter (\lst -> length lst > n) lists
 
 main = do
     -- 1)
@@ -146,6 +146,11 @@ main = do
     putStrLn $ "Answer: " ++ show (nposlist n4 x4) ++ "\n"
 
     let n5 = 2
+    let x5 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    putStrLn $ "Entering: " ++ show n5 ++ " and " ++ show x5
+    putStrLn $ "Answer: " ++ show (nposlist n5 x5) ++ "\n"
+
+    let n5 = 4
     let x5 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     putStrLn $ "Entering: " ++ show n5 ++ " and " ++ show x5
     putStrLn $ "Answer: " ++ show (nposlist n5 x5) ++ "\n"
