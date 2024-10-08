@@ -7,20 +7,18 @@ listnums n
 -- Takes a list of list and returns a new list of the last elements of each sublist
 secondlastlist :: [[a]] -> [a]
 secondlastlist [] = []
-secondlastlist [[]] = []
-secondlastlist (x:xs) = last x : secondlastlist xs
+secondlastlist (x:xs)
+    | null x    = secondlastlist xs
+    | otherwise = last x : secondlastlist xs
 
 -- Concatenates two lists without duplicates
 myunion :: Eq a => [a] -> [a] -> [a]
-myunion [] ys = ys
-myunion (x:xs) ys
-    | x `elem` ys = myunion xs ys
-    | otherwise   = x : myunion xs ys
-
--- myunion :: (Eq a) => [a] -> [a] -> [a]
--- myunion [] xs = xs
--- myunion xs [] = xs
--- myunion acc (x:xs) = ([x | x `notElem` acc]) ++ myunion acc xs
+myunion xs ys = removeDuplicates (xs ++ ys)
+  where
+    removeDuplicates [] = []
+    removeDuplicates (z:zs)
+        | z `elem` zs = removeDuplicates zs
+        | otherwise = z : removeDuplicates zs
 
 -- Takes two lists and returns a new list of elements from the first list that hasn't occured in the second list
 mysubst :: Eq a => [a] -> [a] -> [a]
@@ -74,6 +72,10 @@ main = do
     putStrLn  $ "Entering: " ++ show x
     putStrLn  $ "Answer: " ++ show (secondlastlist x) ++ "\n"
 
+    let x = [[1, 2], [], [7, 8, 9]]
+    putStrLn  $ "Entering: " ++ show x
+    putStrLn  $ "Answer: " ++ show (secondlastlist x) ++ "\n"
+
     -- 3)
     putStrLn "3) Concatenates two lists without duplicates:"
     let x1 = [] :: [Int]
@@ -100,6 +102,11 @@ main = do
     let y7 = [5, 4, 3, 2, 1]
     putStrLn $ "Entering: " ++ show x7 ++ " and " ++ show y7
     putStrLn $ "Answer: " ++ show (myunion x7 y7) ++ "\n"
+
+    let x8 = [1, 1, 1]
+    let y8 = [2, 2]
+    putStrLn $ "Entering: " ++ show x8 ++ " and " ++ show y8
+    putStrLn $ "Answer: " ++ show (myunion x8 y8) ++ "\n"
 
     -- 4)
     putStrLn "4) Takes two lists and returns a new list of elements from the first list that hasn't occured in the second list:"
