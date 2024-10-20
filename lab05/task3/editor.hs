@@ -7,7 +7,7 @@ import Data.Char(isDigit)
 viewFile :: String -> IO ()
 viewFile inFileName = do
     content <- readFile inFileName
-    putStrLn $ "Файл " ++ show inFileName ++ " содержит следующую информацию:"
+    putStrLn $ "Файл " ++ show inFileName ++ " содержит:"
     putStrLn content
 
 appendDataFile :: String -> String -> IO ()
