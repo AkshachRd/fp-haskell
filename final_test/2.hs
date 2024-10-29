@@ -1,5 +1,5 @@
 -- 2.hs
-import Modulemy (ex1, ex3, ex4)
+import Modulemy (ex1, ex2, ex3, ex4)
 
 -- Test cases for ex1
 ex_1_tests = do
@@ -19,13 +19,13 @@ ex_1_tests = do
     -- print $ ex1 0 [1,2,3]
 
 -- Test cases for ex2
--- ex_2_tests = do
---     putStrLn "\nTesting ex2:"
---     let result = ex2
---     -- Printing all the Pythagorean triples found
---     mapM_ print result
---     -- Additional checks can be performed to verify the correctness of the output
---     -- For the purpose of this test, we are displaying the results
+ex_2_tests = do
+    putStrLn "\nTesting ex2:"
+    let result = ex2
+    -- Printing all the Pythagorean triples found
+    mapM_ print result
+    -- Additional checks can be performed to verify the correctness of the output
+    -- For the purpose of this test, we are displaying the results
 
 -- Test cases for ex3
 ex_3_tests = do
@@ -74,7 +74,7 @@ main = do
     testChoice <- getLine
     case testChoice of
         "ex1" -> ex_1_tests
-        -- "ex2" -> ex_2_tests
+        "ex2" -> ex_2_tests
         "ex3" -> ex_3_tests
         "ex4" -> ex_4_tests
         _     -> putStrLn "Invalid choice. Please enter ex1, ex2, ex3, or ex4."

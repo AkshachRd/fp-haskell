@@ -8,19 +8,28 @@ ex1 n xs
     | null xs   = []
     | otherwise = take n xs : ex1 n (drop n xs)
 
--- Function ex2: Finds Pythagorean triples of even numbers in [1..200] with the same sum
--- ex2 :: [[Int]]
--- ex2 = 
---     let triplesWithSum = [ [a,b,c,s] |                           m <- [2..20], n <- [1..(m-1)], 
---                            let a0 = m^2 - n^2,                           let b0 = 2*m*n,
---                            let c0 = m^2 + n^2,                           k <- [1..10],
---                            let a = k * a0,                           let b = k * b0,
---                            let c = k * c0,                           a < b, b < c,
---                            even a, even b, even c,                           a >= 2, b >= 2, c >= 2,
---                            a <= 200, b <= 200, c <= 200,                           let s = a + b + c
---                          ]        groupedTriples = groupBy (\t1 t2 -> last t1 == last t2)
---                           $ sortBy (\t1 t2 -> compare (last t1) (last t2))                          triplesWithSum
---         finalTriples = concat [ if length grp > 1 then grp else [] | grp <- groupedTriples ]    in finalTriples
+ex2 :: [[Int]]
+ex2 =
+    let triplesWithSum = [ [a,b,c,s] |
+                           m <- [2..20], n <- [1..(m-1)],
+                           let a0 = m^2 - n^2,
+                           let b0 = 2*m*n,
+                           let c0 = m^2 + n^2,
+                           k <- [1..10],
+                           let a = k * a0,
+                           let b = k * b0,
+                           let c = k * c0,
+                           a < b, b < c,
+                           even a, even b, even c,
+                           a >= 1, b >= 1, c >= 1,
+                           a <= 200, b <= 200, c <= 200,
+                           let s = a + b + c
+                         ]
+        groupedTriples = groupBy (\t1 t2 -> last t1 == last t2)
+                          $ sortBy (\t1 t2 -> compare (last t1) (last t2))
+                          triplesWithSum
+        finalTriples = concat [ if length grp > 1 then grp else [] | grp <- groupedTriples ]
+    in finalTriples
 
 ex3 :: Eq a => [a] -> [a] -> [Int]
 ex3 xs ys = [i | (i, (x, y)) <- pairsWithIndex, x == y]
@@ -33,7 +42,9 @@ countOccurrences x = length . filter (== x)
 ex4 :: FilePath -> FilePath -> IO ()
 ex4 inputFileName outputFileName = do
     inputFileExists <- doesFileExist inputFileName
-    if not inputFileExists then putStrLn "error"
+    outputFileExists <- doesFileExist outputFileName
+
+    if not inputFileExists || not outputFileExists then putStrLn "error"
     else do
         content <- readFile inputFileName
         let linesList = lines content
