@@ -1,5 +1,6 @@
 -- 2.hs
 import Modulemy (ex1, ex2, ex3, ex4)
+import Text.Printf (printf)
 
 -- Test cases for ex1
 ex_1_tests = do
@@ -26,6 +27,7 @@ ex_2_tests = do
     mapM_ print result
     -- Additional checks can be performed to verify the correctness of the output
     -- For the purpose of this test, we are displaying the results
+    printf "Length: %d\n" (length result)
 
 -- Test cases for ex3
 ex_3_tests = do
