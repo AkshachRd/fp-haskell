@@ -4,7 +4,7 @@ import Data.List
 
 ex1 :: Int -> [a] -> [[a]]
 ex1 n xs
-    | n <= 0    = error "Chunk size must be greater than 0"
+    | n <= 0    = error "error"
     | null xs   = []
     | otherwise = take n xs : ex1 n (drop n xs)
 
@@ -40,14 +40,19 @@ triplesWithSums = [
 filteredTriples :: [(Int, Int, Int, Int)]
 filteredTriples = removeDuplicates triplesWithSums
 
-sortedBySum :: [(Int, Int, Int, Int)]
-sortedBySum =
+groupedSortedBySum :: [[(Int, Int, Int, Int)]]
+groupedSortedBySum =
+    groupBy (\(_, _, _, sum1) (_, _, _, sum2) -> sum1 == sum2) $
     sortBy (\(_, _, _, sum1) (_, _, _, sum2) -> compare sum1 sum2) filteredTriples
+
+sortedByABC :: [(Int, Int, Int, Int)]
+sortedByABC =
+    concatMap sort groupedSortedBySum
 
 ex2 :: [[Int]]
 ex2 = [
     [a, b, c, sumABC] |
-    (a, b, c, sumABC) <- sortedBySum
+    (a, b, c, sumABC) <- sortedByABC
     ]
 
 ex3 :: Eq a => [a] -> [a] -> [Int]
