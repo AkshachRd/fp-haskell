@@ -71,6 +71,10 @@ ex3 xs ys = [i | (i, (x, y)) <- pairsWithIndex, x == y]
 countOccurrences :: Eq a => a -> [a] -> Int
 countOccurrences x = length . filter (== x)
 
+removeDuplicates :: Eq a => [a] -> [a]
+removeDuplicates [] = []
+removeDuplicates (x:xs) = x : removeDuplicates (filter (/= x) xs)
+
 ex4 :: FilePath -> FilePath -> IO ()
 ex4 inputFileName outputFileName = do
     inputFileExists <- doesFileExist inputFileName
@@ -80,6 +84,6 @@ ex4 inputFileName outputFileName = do
         let linesList = lines content
         if null linesList then putStrLn "error"
         else do
-            let uniqueLines = [line | line <- linesList, countOccurrences line linesList == 1]
-            let outputContent = unlines uniqueLines
+            let notUniqueLines = [line | line <- linesList, countOccurrences line linesList > 1]
+            let outputContent = (unlines . removeDuplicates) notUniqueLines
             writeFile outputFileName outputContent
