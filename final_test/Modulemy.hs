@@ -74,9 +74,7 @@ countOccurrences x = length . filter (== x)
 ex4 :: FilePath -> FilePath -> IO ()
 ex4 inputFileName outputFileName = do
     inputFileExists <- doesFileExist inputFileName
-    outputFileExists <- doesFileExist outputFileName
-
-    if not inputFileExists || not outputFileExists then putStrLn "error"
+    if not inputFileExists then putStrLn "error"
     else do
         content <- readFile inputFileName
         let linesList = lines content
