@@ -8,28 +8,60 @@ ex1 n xs
     | null xs   = []
     | otherwise = take n xs : ex1 n (drop n xs)
 
+-- Step 1: Generate Pythagorean triples using Euclid's formula
+generatePythagoreanTriples :: [(Int, Int, Int)]
+generatePythagoreanTriples = [
+    (a, b, c) |
+        m <- [2..20],                 -- m and n are positive integers with m > n
+        n <- [1..(m - 1)],
+        let a0 = m^2 - n^2,           -- Euclid's formula to generate primitive triples
+        let b0 = 2 * m * n,
+        let c0 = m^2 + n^2,
+        k <- [1..10],                 -- Scaling factor k to generate multiples of the primitive triple
+        let a = k * a0,               -- Scale the sides
+        let b = k * b0,
+        let c = k * c0,
+        a < b, b < c,                 -- Ensure the sides are in ascending order
+        even a, even b, even c,       -- Only consider even numbers
+        a >= 2, b >= 2, c >= 2,       -- Sides must be at least 2
+        a <= 200, b <= 200, c <= 200  -- Sides must be at most 200
+    ]
+
+-- Step 2: Calculate the sum of each triple
+triplesWithSums :: [(Int, Int, Int, Int)]
+triplesWithSums = [
+    (a, b, c, sumABC) |
+        (a, b, c) <- generatePythagoreanTriples,
+        let sumABC = a + b + c        -- Calculate the sum of the sides
+    ]
+
+-- Step 3: Group the triples by their sums
+groupedBySum :: [[(Int, Int, Int, Int)]]
+groupedBySum =
+    groupBy (\(_, _, _, sum1) (_, _, _, sum2) -> sum1 == sum2) $
+    sortBy (\(_, _, _, sum1) (_, _, _, sum2) -> compare sum1 sum2) triplesWithSums
+
+-- Step 4: Filter out sums that have only one triple
+sumsWithMultipleTriples :: [[(Int, Int, Int, Int)]]
+sumsWithMultipleTriples = [
+    group |
+    group <- groupedBySum,
+    length group > 1                 -- Keep only groups with more than one triple
+    ]
+
+-- Step 5: Flatten the list of groups into a list of triples
+filteredTriples :: [(Int, Int, Int, Int)]
+filteredTriples = concat sumsWithMultipleTriples
+
+-- Step 6: Convert each tuple to a list for the final output
+finalTriples :: [[Int]]
+finalTriples = [
+    [a, b, c, sumABC] |
+    (a, b, c, sumABC) <- filteredTriples
+    ]
+
 ex2 :: [[Int]]
-ex2 =
-    let triplesWithSum = [ [a,b,c,s] |
-                           m <- [2..20], n <- [1..(m-1)],
-                           let a0 = m^2 - n^2,
-                           let b0 = 2*m*n,
-                           let c0 = m^2 + n^2,
-                           k <- [1..10],
-                           let a = k * a0,
-                           let b = k * b0,
-                           let c = k * c0,
-                           a < b, b < c,
-                           even a, even b, even c,
-                           a >= 1, b >= 1, c >= 1,
-                           a <= 200, b <= 200, c <= 200,
-                           let s = a + b + c
-                         ]
-        groupedTriples = groupBy (\t1 t2 -> last t1 == last t2)
-                          $ sortBy (\t1 t2 -> compare (last t1) (last t2))
-                          triplesWithSum
-        finalTriples = concat [ if length grp > 1 then grp else [] | grp <- groupedTriples ]
-    in finalTriples
+ex2 = finalTriples
 
 ex3 :: Eq a => [a] -> [a] -> [Int]
 ex3 xs ys = [i | (i, (x, y)) <- pairsWithIndex, x == y]
